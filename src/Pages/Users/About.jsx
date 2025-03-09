@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react"; // Import useState
 import { motion } from "framer-motion";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -12,6 +12,60 @@ const riyaImg = new URL("/src/assets/images/riya.jpg", import.meta.url).href;
 const priyaImg = new URL("/src/assets/images/priya.jpg", import.meta.url).href;
 
 const About = () => {
+  const allReviews = [
+    { 
+      name: "Anju Sharma", 
+      feedback: "FixBase exceeded my expectations! Their service was incredibly fast, efficient, and highly professional. The staff was friendly, and they ensured that every detail was perfect. I will definitely use their services again and highly recommend FixBase to anyone looking for reliable home solutions.", 
+      img: anjuImg 
+    },
+    { 
+      name: "Neha", 
+      feedback: "I love their eco-friendly approach. Highly recommended!", 
+      img: nehaImg 
+    },
+    { 
+      name: "Aditya Pathaniya", 
+      feedback: "Affordable, reliable, and top-quality service!", 
+      img: adityaImg 
+    },
+    { 
+      name: "Riya Mehta", 
+      feedback: "Super smooth booking process. Definitely using FixBase again!", 
+      img: riyaImg 
+    },
+    { 
+      name: "Priya Kapoor", 
+      feedback: "Professional team and great service quality!", 
+      img: priyaImg 
+    },
+    { 
+      name: "Rahul Verma", 
+      feedback: "Excellent service and quick response!", 
+      img: "rahul.jpg" 
+    },
+    { 
+      name: "Sneha Singh", 
+      feedback: "Highly satisfied with their work!", 
+      img: "sneha.jpg" 
+    },
+  ];
+
+  // State to manage visible reviews
+  const [visibleReviews, setVisibleReviews] = useState(allReviews.slice(0, 3)); // Initially show 3 reviews
+  const [showAllReviews, setShowAllReviews] = useState(false); // Track if all reviews are shown
+
+  // Function to load more reviews
+  const handleViewMoreReviews = () => {
+    if (visibleReviews.length < allReviews.length) {
+      // Show 3 more reviews
+      const nextReviews = allReviews.slice(visibleReviews.length, visibleReviews.length + 3);
+      setVisibleReviews([...visibleReviews, ...nextReviews]);
+    } else {
+      // No more reviews to show
+      setShowAllReviews(true);
+    }
+  };
+
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col items-center justify-center p-6">
       {/* Animated Heading Section */}
@@ -71,18 +125,9 @@ const About = () => {
           <span className="font-semibold text-blue-600">Your comfort, our priority.</span>
         </motion.p>
 
-        {/* Call-to-Action Button */}
-        <motion.div
-          className="mt-8 flex justify-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1 }}
-        >
-          <button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-            Book Now
-          </button>
+      
         </motion.div>
-      </motion.div>
+      
 
       {/* Feature Cards Section */}
       <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl">
@@ -118,87 +163,54 @@ const About = () => {
         ))}
       </div>
 
-      {/* Testimonials Carousel */}
+      {/* Testimonials Section */}
       <motion.div
-        className="mt-20 max-w-4xl w-full px-4 sm:px-0"
+        className="mt-20 max-w-6xl w-full px-4 sm:px-2"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 1.5 }}
       >
-       
-        <motion.div
-  className="mt-10 max-6xl w-full px-4 sm:px-2"
-  initial={{ opacity: 0, y: 20 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 1, delay: 1.5 }}
->
-  <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center font-poppins">
-    What Our Customers Say
-  </h2>
+        <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center font-poppins">
+          What Our Customers Say
+        </h2>
 
-  {/* Grid Layout for Testimonials */}
-  <div className="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-3 gap-6">
-    {[
-      { 
-        name: "Anju Sharma", 
-        feedback: "FixBase exceeded my expectations! Their service was incredibly fast, efficient, and highly professional. The staff was friendly, and they ensured that every detail was perfect. I will definitely use their services again and highly recommend FixBase to anyone looking for reliable home solutions.", 
-        img: anjuImg 
-      },
-      { 
-        name: "Neha", 
-        feedback: "I love their eco-friendly approach. Highly recommended!", 
-        img: nehaImg 
-      },
-      { 
-        name: "Aditya Pathaniya", 
-        feedback: "Affordable, reliable, and top-quality service!", 
-        img: adityaImg 
-      },
-      { 
-        name: "Riya Mehta", 
-        feedback: "Super smooth booking process. Definitely using FixBase again!", 
-        img: riyaImg 
-      },
-      { 
-        name: "Priya Kapoor", 
-        feedback: "Professional team and great service quality!", 
-        img: priyaImg 
-      },
-    ].map((review, index) => (
-      <motion.div
-        key={index}
-        className="bg-white rounded-xl shadow-md p-3 text-center hover:shadow-lg transition-all duration-300"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 * index }}
-      >
-        <div className="flex justify-center">
-          <img
-            src={review.img}
-            alt={review.name}
-            className="w-20 h-20 sm:w-30 sm:h-34 object-cover rounded-full border-1 border-gray-300 shadow-md"
-          />
+        {/* Grid Layout for Testimonials */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {visibleReviews.map((review, index) => (
+            <motion.div
+              key={index}
+              className="bg-white rounded-xl shadow-md p-3 text-center hover:shadow-lg transition-all duration-300"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 * index }}
+            >
+              <div className="flex justify-center">
+                <img
+                  src={review.img}
+                  alt={review.name}
+                  className="w-20 h-20 sm:w-30 sm:h-34 object-cover rounded-full border-1 border-gray-300 shadow-md"
+                />
+              </div>
+              <p className="text-black italic mt-3 text-sm text-left sm:text-base">
+                “{review.feedback}”
+              </p>
+              <h4 className="text-lg font-bold mt-2 text-gray-900">- {review.name}</h4>
+            </motion.div>
+          ))}
         </div>
-        <p className="text-black italic mt-3 text-sm text-left sm:text-base">
-          “{review.feedback}”
-        </p>
-        <h4 className="text-lg font-bold mt-2 text-gray-900">- {review.name}</h4>
-      </motion.div>
-    ))}
-  </div>
 
-  {/* View More Reviews Button */}
-  <div className="flex justify-center mt-8">
-    <button className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition">
-      View More Reviews
-    </button>
-  </div>
-</motion.div>
-
-        <div className="flex justify-center mt-6">
-          <button className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition">
-            View More Reviews
-          </button>
+        {/* View More Reviews Button */}
+        <div className="flex justify-center mt-8">
+          {!showAllReviews ? (
+            <button
+              onClick={handleViewMoreReviews}
+              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition"
+            >
+              View More Reviews
+            </button>
+          ) : (
+            <p className="text-gray-600 font-semibold">No more reviews to show.</p>
+          )}
         </div>
       </motion.div>
     </div>
