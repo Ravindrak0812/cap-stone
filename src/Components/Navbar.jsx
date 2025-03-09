@@ -48,6 +48,8 @@ export default function Navbar() {
   const handleSearchClick = (servicePath) => {
     setSearchQuery("");
     setFilteredServices([]);
+    // Navigate to the service page (you can use your routing logic here)
+    console.log("Navigating to:", servicePath);
   };
 
   useEffect(() => {
@@ -143,6 +145,11 @@ export default function Navbar() {
                   {service.name}
                 </Link>
               ))}
+            </div>
+          )}
+          {searchQuery && filteredServices.length === 0 && (
+            <div className="absolute left-0 mt-2 w-64 bg-white shadow-lg border border-gray-100 rounded-lg py-2">
+              <p className="px-4 py-2 text-gray-700">Not Found</p>
             </div>
           )}
         </div>
@@ -296,6 +303,11 @@ export default function Navbar() {
                         {service.name}
                       </Link>
                     ))}
+                  </div>
+                )}
+                {searchQuery && filteredServices.length === 0 && (
+                  <div className="absolute left-0 mt-2 w-full bg-white shadow-lg border border-gray-100 rounded-lg py-2">
+                    <p className="px-4 py-2 text-gray-700">Not Found</p>
                   </div>
                 )}
               </div>
