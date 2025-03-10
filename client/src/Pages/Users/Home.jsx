@@ -50,14 +50,23 @@ const Home = () => {
           {services.map((service, index) => (
             <motion.div
               key={service.name}
-              className="relative p-8 bg-white/90 backdrop-blur-md shadow-lg rounded-xl flex flex-col items-center transition-all cursor-pointer 
-                        hover:bg-gradient-to-r hover:from-blue-100 hover:to-blue-200 hover:text-gray-900 hover:shadow-xl"
-              whileHover={{ scale: 1.05 }}
+              className="relative p-8 bg-white/90 backdrop-blur-md shadow-lg rounded-xl flex flex-col items-center transition-all cursor-pointer hover:bg-gradient-to-r hover:from-blue-100 hover:to-blue-200 hover:text-gray-900 hover:shadow-xl"
+              whileHover={{ scale: 1.1, rotate: 3 }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
+              transition={{
+                duration: 0.6,
+                delay: index * 0.2,
+                ease: "easeOut",
+              }}
             >
-              <div className="text-blue-500 hover:text-gray-800 text-5xl mb-4">{service.icon}</div>
+              <motion.div
+                className="text-blue-500 hover:text-gray-800 text-5xl mb-4"
+                whileHover={{ scale: 1.2 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+              >
+                {service.icon}
+              </motion.div>
               <h3 className="text-xl font-semibold">{service.name}</h3>
               <Link to={service.path} className="absolute inset-0"></Link>
             </motion.div>

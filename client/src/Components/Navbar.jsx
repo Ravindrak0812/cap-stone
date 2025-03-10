@@ -1,17 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { FiChevronDown, FiSearch, FiMessageCircle, FiPhone, FiMail } from "react-icons/fi";
-import { FaWhatsapp } from "react-icons/fa"; // Import WhatsApp icon from react-icons/fa
+import { FiChevronDown, FiSearch, FiPhone, FiMail } from "react-icons/fi"; // Added FiPhone and FiMail
+import { FaWhatsapp } from "react-icons/fa";
 import { contactDetails } from "../config"; // Import contact details
 
 export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredServices, setFilteredServices] = useState([]);
   const dropdownRef = useRef(null);
   const enquiryRef = useRef(null);
-  const searchRef = useRef(null);
 
   const services = [
     { name: "Technician", path: "/services/technician" },
@@ -22,36 +19,19 @@ export default function Navbar() {
     { name: "Cleaning Services", path: "/services/cleaning" },
   ];
 
-  const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
-  const toggleEnquiry = () => setIsEnquiryOpen(!isEnquiryOpen);
+  const handleMouseEnterServices = () => setIsDropdownOpen(true);
+  const handleMouseLeaveServices = () => setIsDropdownOpen(false);
 
-  const handleSearchChange = (e) => {
-    const query = e.target.value.toLowerCase();
-    setSearchQuery(query);
-    if (query) {
-      const results = services.filter((service) =>
-        service.name.toLowerCase().includes(query)
-      );
-      setFilteredServices(results);
-    } else {
-      setFilteredServices([]);
-    }
-  };
-
-  const handleSearchClick = (servicePath) => {
-    setSearchQuery("");
-    setFilteredServices([]);
-  };
+  const handleMouseEnterEnquiry = () => setIsEnquiryOpen(true);
+  const handleMouseLeaveEnquiry = () => setIsEnquiryOpen(false);
 
   useEffect(() => {
     function handleClickOutside(event) {
       if (
         (dropdownRef.current && !dropdownRef.current.contains(event.target)) &&
-        (searchRef.current && !searchRef.current.contains(event.target)) &&
         (enquiryRef.current && !enquiryRef.current.contains(event.target))
       ) {
         setIsDropdownOpen(false);
-        setFilteredServices([]);
         setIsEnquiryOpen(false);
       }
     }
@@ -76,11 +56,13 @@ export default function Navbar() {
           </Link>
 
           {/* Services Dropdown */}
-          <div className="relative" ref={dropdownRef}>
-            <button
-              onClick={toggleDropdown}
-              className="flex items-center text-gray-700 font-medium hover:text-blue-600 transition-all duration-300"
-            >
+          <div
+            className="relative"
+            ref={dropdownRef}
+            onMouseEnter={handleMouseEnterServices}
+            onMouseLeave={handleMouseLeaveServices}
+          >
+            <button className="flex items-center text-gray-700 font-medium hover:text-blue-600 transition-all duration-300">
               Services <FiChevronDown className="ml-1" />
             </button>
 
@@ -91,7 +73,6 @@ export default function Navbar() {
                     key={service.name}
                     to={service.path}
                     className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                    onClick={() => setIsDropdownOpen(false)}
                   >
                     {service.name}
                   </Link>
@@ -112,45 +93,27 @@ export default function Navbar() {
           <Link to="/login" className="text-gray-700 font-medium hover:text-blue-600 transition-all duration-300">
             Login
           </Link>
-          
         </div>
 
         {/* Search Bar */}
-        <div className="relative" ref={searchRef}>
+        <div className="relative">
           <input
             type="text"
-            value={searchQuery}
-            onChange={handleSearchChange}
             placeholder="Search services..."
             className="bg-gray-100 text-gray-800 rounded-full px-5 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-600 w-64"
           />
           <FiSearch className="absolute right-3 top-2 text-blue-600" size={20} />
-
-          {/* Search Results Dropdown */}
-          {filteredServices.length > 0 && (
-            <div className="absolute left-0 mt-2 w-64 bg-white shadow-lg border border-gray-200 rounded-lg py-2">
-              {filteredServices.map((service) => (
-                <Link
-                  key={service.name}
-                  to={service.path}
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                  onClick={() => handleSearchClick(service.path)}
-                >
-                  {service.name}
-                </Link>
-              ))}
-            </div>
-          )}
         </div>
 
         {/* Enquiry Button */}
-        <div className="relative" ref={enquiryRef}>
-          <button
-            onClick={toggleEnquiry}
-            className="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition-all duration-300 flex items-center space-x-2"
-          >
-            <FiMessageCircle className="text-xl" />
-            <span>Enquiry</span>
+        <div
+          className="relative"
+          ref={enquiryRef}
+          onMouseEnter={handleMouseEnterEnquiry}
+          onMouseLeave={handleMouseLeaveEnquiry}
+        >
+          <button className="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition-all duration-300 flex items-center space-x-2">
+            Enquiry
           </button>
 
           {/* Enquiry Dropdown */}
