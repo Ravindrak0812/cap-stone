@@ -1,23 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-<<<<<<< HEAD
-import { FiChevronDown, FiSearch, FiPhone, FiMail } from "react-icons/fi"; // Added FiPhone and FiMail
-import { FaWhatsapp } from "react-icons/fa";
-import { contactDetails } from "../config"; // Import contact details
-=======
 import { FiChevronDown, FiSearch, FiMessageCircle, FiPhone, FiMail, FiUser, FiMenu } from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { contactDetails } from "../config";
->>>>>>> 1ad5c0e (Updated multiple files: About.jsx, Navbar.jsx, fixed icons issue)
 
 export default function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
-<<<<<<< HEAD
-  const dropdownRef = useRef(null);
-  const enquiryRef = useRef(null);
-=======
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredServices, setFilteredServices] = useState([]);
@@ -27,7 +17,6 @@ export default function Navbar() {
   const searchRef = useRef(null);
   const userRef = useRef(null);
   const mobileMenuRef = useRef(null);
->>>>>>> 1ad5c0e (Updated multiple files: About.jsx, Navbar.jsx, fixed icons issue)
 
   const services = [
     { name: "Technician", path: "/services/technician" },
@@ -38,13 +27,6 @@ export default function Navbar() {
     { name: "Cleaning Services", path: "/services/cleaning" },
   ];
 
-<<<<<<< HEAD
-  const handleMouseEnterServices = () => setIsDropdownOpen(true);
-  const handleMouseLeaveServices = () => setIsDropdownOpen(false);
-
-  const handleMouseEnterEnquiry = () => setIsEnquiryOpen(true);
-  const handleMouseLeaveEnquiry = () => setIsEnquiryOpen(false);
-=======
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
   const toggleEnquiry = () => setIsEnquiryOpen(!isEnquiryOpen);
   const toggleUserDropdown = () => setIsUserDropdownOpen(!isUserDropdownOpen);
@@ -68,22 +50,18 @@ export default function Navbar() {
     setFilteredServices([]);
     console.log("Navigating to:", servicePath);
   };
->>>>>>> 1ad5c0e (Updated multiple files: About.jsx, Navbar.jsx, fixed icons issue)
 
   useEffect(() => {
     function handleClickOutside(event) {
       if (
         (dropdownRef.current && !dropdownRef.current.contains(event.target)) &&
-<<<<<<< HEAD
-        (enquiryRef.current && !enquiryRef.current.contains(event.target))
-=======
         (searchRef.current && !searchRef.current.contains(event.target)) &&
         (enquiryRef.current && !enquiryRef.current.contains(event.target)) &&
         (userRef.current && !userRef.current.contains(event.target)) &&
         (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target))
->>>>>>> 1ad5c0e (Updated multiple files: About.jsx, Navbar.jsx, fixed icons issue)
       ) {
         setIsDropdownOpen(false);
+        setFilteredServices([]);
         setIsEnquiryOpen(false);
         setIsUserDropdownOpen(false);
         setIsMobileMenuOpen(false);
@@ -113,12 +91,6 @@ export default function Navbar() {
           <div
             className="relative"
             ref={dropdownRef}
-<<<<<<< HEAD
-            onMouseEnter={handleMouseEnterServices}
-            onMouseLeave={handleMouseLeaveServices}
-          >
-            <button className="flex items-center text-gray-700 font-medium hover:text-blue-600 transition-all duration-300">
-=======
             onMouseEnter={() => setIsDropdownOpen(true)} // Show on hover
             onMouseLeave={() => setIsDropdownOpen(false)} // Hide on hover out
           >
@@ -126,7 +98,6 @@ export default function Navbar() {
               onClick={toggleDropdown}
               className="flex items-center text-gray-700 font-medium hover:text-blue-600 transition-all duration-300"
             >
->>>>>>> 1ad5c0e (Updated multiple files: About.jsx, Navbar.jsx, fixed icons issue)
               Services <FiChevronDown className="ml-1" />
             </button>
 
@@ -136,12 +107,8 @@ export default function Navbar() {
                   <Link
                     key={service.name}
                     to={service.path}
-<<<<<<< HEAD
-                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-=======
                     className="block px-4 py-2 text-gray-700 hover:bg-gray-50 transition-all duration-300"
                     onClick={() => setIsDropdownOpen(false)}
->>>>>>> 1ad5c0e (Updated multiple files: About.jsx, Navbar.jsx, fixed icons issue)
                   >
                     {service.name}
                   </Link>
@@ -156,42 +123,18 @@ export default function Navbar() {
           <Link to="/contact" className="text-gray-700 font-medium hover:text-blue-600 transition-all duration-300">
             Contact
           </Link>
-<<<<<<< HEAD
-          <Link to="/signup" className="text-gray-700 font-medium hover:text-blue-600 transition-all duration-300">
-            SignUp
-          </Link>
-          <Link to="/login" className="text-gray-700 font-medium hover:text-blue-600 transition-all duration-300">
-            Login
-          </Link>
-        </div>
-
-        {/* Search Bar */}
-        <div className="relative">
-=======
         </div>
 
         {/* Search Bar */}
         <div className="hidden lg:block relative" ref={searchRef}>
->>>>>>> 1ad5c0e (Updated multiple files: About.jsx, Navbar.jsx, fixed icons issue)
           <input
             type="text"
+            value={searchQuery}
+            onChange={handleSearchChange}
             placeholder="Search services..."
             className="bg-gray-50 text-gray-800 rounded-full px-5 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-100 w-64 transition-all duration-300"
           />
           <FiSearch className="absolute right-3 top-2 text-blue-600" size={20} />
-<<<<<<< HEAD
-        </div>
-
-        {/* Enquiry Button */}
-        <div
-          className="relative"
-          ref={enquiryRef}
-          onMouseEnter={handleMouseEnterEnquiry}
-          onMouseLeave={handleMouseLeaveEnquiry}
-        >
-          <button className="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition-all duration-300 flex items-center space-x-2">
-            Enquiry
-=======
 
           {/* Search Results Dropdown */}
           {filteredServices.length > 0 && (
@@ -223,7 +166,6 @@ export default function Navbar() {
           >
             <FiMessageCircle className="text-xl" />
             <span>Enquiry</span>
->>>>>>> 1ad5c0e (Updated multiple files: About.jsx, Navbar.jsx, fixed icons issue)
           </button>
 
           {/* Enquiry Dropdown */}
