@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 function Signup() {
-  const [name, setName] = useState('');  // 'name' field
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+
+  const navigate = useNavigate(); // Initialize navigate function
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -16,22 +19,25 @@ function Signup() {
       return;
     }
 
-    const userData = { name, email, password };  // Ensure 'name' is included
+    const userData = { name, email, password };
 
     try {
       const response = await fetch('http://localhost:5000/api/auth/signup', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),  // Send name along with email and password
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userData),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        setSuccessMessage('Signup successful! You can now log in.');
+        setSuccessMessage('Signup successful! Redirecting to login...');
         setError('');
+        
+        // Redirect to login page after 2 seconds
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000);
       } else {
         setError(data.message || 'Something went wrong. Please try again.');
       }
@@ -52,12 +58,11 @@ function Signup() {
             <input
               type="text"
               id="name"
-              name="name"
-              required
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full px-4 py-2 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               placeholder="Enter your name"
+              required
             />
           </div>
           <div className="mb-4">
@@ -65,12 +70,11 @@ function Signup() {
             <input
               type="email"
               id="email"
-              name="email"
-              required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-2 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               placeholder="Enter your email"
+              required
             />
           </div>
           <div className="mb-4">
@@ -78,12 +82,11 @@ function Signup() {
             <input
               type="password"
               id="password"
-              name="password"
-              required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-2 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               placeholder="Enter your password"
+              required
             />
           </div>
           <div className="mb-4">
@@ -91,23 +94,25 @@ function Signup() {
             <input
               type="password"
               id="confirm-password"
-              name="confirm-password"
-              required
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full px-4 py-2 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               placeholder="Confirm your password"
+              required
             />
           </div>
-          <button type="submit" className="w-full bg-blue-800 text-white py-2 rounded-lg hover:bg-blue-900 focus:outline-none">Sign Up</button>
+          <button type="submit" className="w-full bg-blue-800 text-white py-2 rounded-lg hover:bg-blue-900 focus:outline-none">
+            Sign Up
+          </button>
         </form>
 
-        {/* Displaying success or error messages */}
         {error && <div className="mt-4 text-red-600 text-center">{error}</div>}
         {successMessage && <div className="mt-4 text-green-600 text-center">{successMessage}</div>}
 
         <div className="mt-6 text-center">
-          <p className="text-sm text-blue-600">Already have an account? <a href="/login" className="font-semibold text-blue-800 hover:underline">Login</a></p>
+          <p className="text-sm text-blue-600">
+            Already have an account? <a href="/login" className="font-semibold text-blue-800 hover:underline">Login</a>
+          </p>
         </div>
       </div>
     </div>
