@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
 function Signup() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  const navigate = useNavigate(); // Initialize navigate function
+  const navigate = useNavigate();
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -19,13 +29,18 @@ function Signup() {
       return;
     }
 
-    const userData = { name, email, password };
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('password', password);
+    if (image) {
+      formData.append('image', image);
+    }
 
     try {
       const response = await fetch('http://localhost:5000/api/auth/signup', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userData),
+        body: formData,
       });
 
       const data = await response.json();
@@ -33,8 +48,7 @@ function Signup() {
       if (response.ok) {
         setSuccessMessage('Signup successful! Redirecting to login...');
         setError('');
-        
-        // Redirect to login page after 2 seconds
+
         setTimeout(() => {
           navigate('/login');
         }, 2000);
@@ -52,7 +66,7 @@ function Signup() {
       <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
         <h2 className="text-3xl font-semibold text-center text-blue-800 mb-8">Sign Up</h2>
 
-        <form onSubmit={handleSignup}>
+        <form onSubmit={handleSignup} encType="multipart/form-data">
           <div className="mb-4">
             <label htmlFor="name" className="block text-sm font-medium text-blue-800">Name</label>
             <input
@@ -65,6 +79,7 @@ function Signup() {
               required
             />
           </div>
+
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-medium text-blue-800">Email</label>
             <input
@@ -77,6 +92,7 @@ function Signup() {
               required
             />
           </div>
+
           <div className="mb-4">
             <label htmlFor="password" className="block text-sm font-medium text-blue-800">Password</label>
             <input
@@ -89,6 +105,7 @@ function Signup() {
               required
             />
           </div>
+
           <div className="mb-4">
             <label htmlFor="confirm-password" className="block text-sm font-medium text-blue-800">Confirm Password</label>
             <input
@@ -101,6 +118,30 @@ function Signup() {
               required
             />
           </div>
+
+          {/* Image Upload Section */}
+          <div className="mb-4">
+            <label htmlFor="image" className="block text-sm font-medium text-blue-800">Profile Picture</label>
+            <input
+              type="file"
+              id="image"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full px-2 py-1 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+            />
+          </div>
+
+          {/* Image Preview */}
+          {imagePreview && (
+            <div className="mb-4 text-center">
+              <img
+                src={imagePreview}
+                alt="Preview"
+                className="w-24 h-24 object-cover rounded-full mx-auto border border-gray-300"
+              />
+            </div>
+          )}
+
           <button type="submit" className="w-full bg-blue-800 text-white py-2 rounded-lg hover:bg-blue-900 focus:outline-none">
             Sign Up
           </button>
