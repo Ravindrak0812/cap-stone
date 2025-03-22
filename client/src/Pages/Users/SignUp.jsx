@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FaUser, FaEnvelope, FaLock, FaImage } from 'react-icons/fa';
 
 function Signup() {
   const [name, setName] = useState('');
@@ -62,78 +63,71 @@ function Signup() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
-        <h2 className="text-3xl font-semibold text-center text-blue-800 mb-8">Sign Up</h2>
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-blue-500 to-indigo-600 p-6">
+      <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md transform transition-all duration-500 hover:shadow-2xl">
+        <h2 className="text-4xl font-bold text-center text-blue-800 mb-6">Sign Up</h2>
 
-        <form onSubmit={handleSignup} encType="multipart/form-data">
-          <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-medium text-blue-800">Name</label>
+        <form onSubmit={handleSignup} className="space-y-5">
+          <div className="relative">
+            <FaUser className="absolute left-3 top-3 text-gray-500" />
             <input
               type="text"
-              id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-4 py-2 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-              placeholder="Enter your name"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              placeholder="Full Name"
               required
             />
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-blue-800">Email</label>
+          <div className="relative">
+            <FaEnvelope className="absolute left-3 top-3 text-gray-500" />
             <input
               type="email"
-              id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-              placeholder="Enter your email"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              placeholder="Email Address"
               required
             />
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-blue-800">Password</label>
+          <div className="relative">
+            <FaLock className="absolute left-3 top-3 text-gray-500" />
             <input
               type="password"
-              id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-              placeholder="Enter your password"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              placeholder="Password"
               required
             />
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="confirm-password" className="block text-sm font-medium text-blue-800">Confirm Password</label>
+          <div className="relative">
+            <FaLock className="absolute left-3 top-3 text-gray-500" />
             <input
               type="password"
-              id="confirm-password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
-              placeholder="Confirm your password"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              placeholder="Confirm Password"
               required
             />
           </div>
 
-          {/* Image Upload Section */}
-          <div className="mb-4">
-            <label htmlFor="image" className="block text-sm font-medium text-blue-800">Profile Picture</label>
+          <div className="relative">
+            <FaImage className="absolute left-3 top-3 text-gray-500" />
             <input
               type="file"
-              id="image"
               accept="image/*"
               onChange={handleImageChange}
-              className="w-full px-2 py-1 border border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 cursor-pointer"
             />
           </div>
 
-          {/* Image Preview */}
           {imagePreview && (
-            <div className="mb-4 text-center">
+            <div className="text-center">
               <img
                 src={imagePreview}
                 alt="Preview"
@@ -142,7 +136,7 @@ function Signup() {
             </div>
           )}
 
-          <button type="submit" className="w-full bg-blue-800 text-white py-2 rounded-lg hover:bg-blue-900 focus:outline-none">
+          <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300 focus:outline-none focus:ring-4 focus:ring-blue-300">
             Sign Up
           </button>
         </form>
@@ -151,7 +145,7 @@ function Signup() {
         {successMessage && <div className="mt-4 text-green-600 text-center">{successMessage}</div>}
 
         <div className="mt-6 text-center">
-          <p className="text-sm text-blue-600">
+          <p className="text-sm text-gray-600">
             Already have an account? <a href="/login" className="font-semibold text-blue-800 hover:underline">Login</a>
           </p>
         </div>

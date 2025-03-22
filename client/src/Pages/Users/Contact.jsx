@@ -41,30 +41,16 @@ Thank you!`;
       >
         Our Team
       </motion.h2>
-      <motion.p
+      {/* <motion.p
         className="text-gray-600 mb-8 text-lg font-inter"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.3 }}
       >
         Meet the amazing team behind FixEase.
-      </motion.p>
+      </motion.p> */}
 
-      {/* Founder Section */}
-      <motion.div
-        className="bg-white shadow-xl rounded-xl p-8 mb-8"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.5 }}
-      >
-        <img
-          src={founderImage}
-          alt="Founder Ravindra Kumar"
-          className="w-60 h-80 mx-auto rounded-full border-4 border-blue-500 object-cover"
-        />
-        <h3 className="text-2xl font-semibold text-gray-800 mt-4 font-poppins">Ravindra Kumar</h3>
-        <p className="text-gray-600 font-inter">Founder</p>
-      </motion.div>
+      
 
       {/* Contact Section */}
       <motion.div
