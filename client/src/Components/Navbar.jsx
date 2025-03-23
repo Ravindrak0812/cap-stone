@@ -8,7 +8,6 @@ import {
   FiMail,
   FiUser,
   FiMenu,
-  FiShoppingCart,
   FiLogIn,
   FiLogOut,
   FiUserPlus,
@@ -16,7 +15,6 @@ import {
 import { FaWhatsapp } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { contactDetails } from "../config";
-import Cart from "./Cart"; // Import the Cart component
 
 const Navbar = () => {
   // State variables
@@ -27,7 +25,6 @@ const Navbar = () => {
   const [filteredServices, setFilteredServices] = useState([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Simulate login state
-  const [isCartOpen, setIsCartOpen] = useState(false); // State for cart visibility
 
   // Refs for handling clicks outside
   const dropdownRef = useRef(null);
@@ -35,7 +32,6 @@ const Navbar = () => {
   const searchRef = useRef(null);
   const userRef = useRef(null);
   const mobileMenuRef = useRef(null);
-  const cartRef = useRef(null);
 
   // Services data
   const services = [
@@ -52,14 +48,8 @@ const Navbar = () => {
   const toggleEnquiry = () => setIsEnquiryOpen(!isEnquiryOpen);
   const toggleUserDropdown = () => setIsUserDropdownOpen(!isUserDropdownOpen);
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
-  const toggleCart = () => setIsCartOpen(!isCartOpen); // Toggle cart visibility
 
-  // Login and logout handlers
-  const handleLogin = () => {
-    setIsLoggedIn(true); // Simulate login
-    setIsUserDropdownOpen(false); // Close dropdown after login
-  };
-
+  // Logout handler
   const handleLogout = () => {
     setIsLoggedIn(false); // Simulate logout
     setIsUserDropdownOpen(false); // Close dropdown after logout
@@ -93,15 +83,13 @@ const Navbar = () => {
         (searchRef.current && !searchRef.current.contains(event.target)) &&
         (enquiryRef.current && !enquiryRef.current.contains(event.target)) &&
         (userRef.current && !userRef.current.contains(event.target)) &&
-        (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) &&
-        (cartRef.current && !cartRef.current.contains(event.target))
+        (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target))
       ) {
         setIsDropdownOpen(false);
         setFilteredServices([]);
         setIsEnquiryOpen(false);
         setIsUserDropdownOpen(false);
         setIsMobileMenuOpen(false);
-        setIsCartOpen(false); // Close cart when clicking outside
       }
     };
 
@@ -234,23 +222,6 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Cart Button */}
-        <div className="hidden lg:block relative" ref={cartRef}>
-          <button
-            onClick={toggleCart}
-            className="text-gray-700 hover:text-blue-600 transition-all duration-300"
-          >
-            <FiShoppingCart className="text-2xl" />
-          </button>
-
-          {/* Render Cart Component */}
-          {isCartOpen && (
-            <div className="absolute right-0 mt-2 w-96 bg-white shadow-lg border border-gray-100 rounded-lg py-2">
-              <Cart onClose={() => setIsCartOpen(false)} />
-            </div>
-          )}
-        </div>
-
         {/* User Icon for Login/Signup */}
         <div className="hidden lg:block relative" ref={userRef}>
           <button
@@ -264,6 +235,7 @@ const Navbar = () => {
           {isUserDropdownOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg border border-gray-100 rounded-lg py-2">
               {isLoggedIn ? (
+                // Logout Button (shown when user is logged in)
                 <button
                   onClick={handleLogout}
                   className="w-full flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 transition-all duration-300"
@@ -272,14 +244,15 @@ const Navbar = () => {
                   <span>Logout</span>
                 </button>
               ) : (
+                // Login and Signup Buttons (shown when user is not logged in)
                 <>
-                  <button
-                    onClick={handleLogin}
-                    className="w-full flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 transition-all duration-300"
+                  <Link
+                    to="/login"
+                    className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 transition-all duration-300"
                   >
                     <FiLogIn className="mr-2" />
                     <span>Login</span>
-                  </button>
+                  </Link>
                   <Link
                     to="/signup"
                     className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 transition-all duration-300"
@@ -423,23 +396,6 @@ const Navbar = () => {
                 )}
               </div>
 
-              {/* Cart Button for Mobile */}
-              <div className="relative mt-4">
-                <button
-                  onClick={toggleCart}
-                  className="text-gray-700 hover:text-blue-600 transition-all duration-300"
-                >
-                  <FiShoppingCart className="text-2xl" />
-                </button>
-
-                {/* Render Cart Component for Mobile */}
-                {isCartOpen && (
-                  <div className="mt-2 bg-white shadow-lg border border-gray-100 rounded-lg py-2">
-                    <Cart onClose={() => setIsCartOpen(false)} />
-                  </div>
-                )}
-              </div>
-
               {/* User Icon for Login/Signup */}
               <div className="relative mt-4">
                 <button
@@ -453,6 +409,7 @@ const Navbar = () => {
                 {isUserDropdownOpen && (
                   <div className="mt-2 bg-white shadow-lg border border-gray-100 rounded-lg py-2">
                     {isLoggedIn ? (
+                      // Logout Button (shown when user is logged in)
                       <button
                         onClick={handleLogout}
                         className="w-full flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 transition-all duration-300"
@@ -461,14 +418,15 @@ const Navbar = () => {
                         <span>Logout</span>
                       </button>
                     ) : (
+                      // Login and Signup Buttons (shown when user is not logged in)
                       <>
-                        <button
-                          onClick={handleLogin}
-                          className="w-full flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 transition-all duration-300"
+                        <Link
+                          to="/login"
+                          className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 transition-all duration-300"
                         >
                           <FiLogIn className="mr-2" />
                           <span>Login</span>
-                        </button>
+                        </Link>
                         <Link
                           to="/signup"
                           className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 transition-all duration-300"

@@ -50,7 +50,7 @@ const Cart = ({ cart, removeFromCart, updateQuantity, totalPrice, onBookNow }) =
                 onClick={onBookNow}
                 className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-all duration-300 font-poppins mt-4"
               >
-                Proceed for booking
+                Proced for booking
               </button>
             </div>
           </>

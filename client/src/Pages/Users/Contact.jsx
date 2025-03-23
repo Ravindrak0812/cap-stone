@@ -1,10 +1,10 @@
 import React from "react";
 import { FaPhoneAlt, FaEnvelope, FaWhatsapp } from "react-icons/fa";
 import { motion } from "framer-motion";
-import founderImage from "../../assets/images/ravi.jpg";
 import { contactDetails } from "../../config"; // Correct import path
 
 const Contact = () => {
+  // Predefined WhatsApp message template
   const whatsappMessage = `Hello FixEase Team,
 
 I am interested in your services. Please send me more information about:
@@ -17,15 +17,18 @@ I am interested in your services. Please send me more information about:
 
 Thank you!`;
 
+  // Function to handle phone call
   const handleCall = () => {
     window.location.href = `tel:${contactDetails.phoneNumber}`;
   };
 
+  // Function to handle WhatsApp message
   const handleWhatsApp = () => {
     const encodedMessage = encodeURIComponent(whatsappMessage);
     window.open(`https://wa.me/${contactDetails.whatsappNumber}?text=${encodedMessage}`, "_blank");
   };
 
+  // Function to handle email
   const handleEmail = () => {
     window.location.href = `mailto:${contactDetails.email}`;
   };
@@ -35,84 +38,67 @@ Thank you!`;
       {/* Heading Section */}
       <motion.h2
         className="text-5xl font-bold text-blue-700 mb-6 font-poppins"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        initial={{ opacity: 0, y: -20 }} // Initial animation state
+        animate={{ opacity: 1, y: 0 }} // Animation on load
+        transition={{ duration: 0.8 }} // Animation duration
       >
         Our Team
       </motion.h2>
-      {/* <motion.p
-        className="text-gray-600 mb-8 text-lg font-inter"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.3 }}
-      >
-        Meet the amazing team behind FixEase.
-      </motion.p> */}
-
-      
 
       {/* Contact Section */}
       <motion.div
         className="bg-gradient-to-r from-blue-50 to-blue-100 p-8 rounded-xl shadow-xl"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.7 }}
+        initial={{ opacity: 0, y: 20 }} // Initial animation state
+        animate={{ opacity: 1, y: 0 }} // Animation on load
+        transition={{ duration: 1, delay: 0.7 }} // Animation duration and delay
       >
         <h3 className="text-4xl font-bold text-blue-700 mb-6 font-poppins">Contact Us</h3>
         <p className="text-gray-600 text-lg mb-8 font-inter">
           Feel free to reach out to us anytime! We're here to help.
         </p>
 
-        {/* Contact Buttons */}
-        <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {/* Call Us Button */}
-          <motion.button
-            onClick={handleCall}
-            className="flex flex-col items-center justify-center bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="bg-blue-600 p-4 rounded-full mb-4">
-              <FaPhoneAlt className="text-2xl text-white" />
-            </div>
-            <h4 className="text-xl font-semibold text-blue-700 mb-2 font-poppins">Call Us</h4>
-            <p className="text-gray-600 font-inter">{contactDetails.phoneNumber}</p>
-          </motion.button>
+        <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-6 place-items-center">
+  {/* Call Us Button */}
+  <motion.button
+    onClick={handleCall}
+    className="flex items-center justify-center p-4 rounded-full hover:bg-blue-100 transition-all duration-300"
+    whileHover={{ scale: 1.1 }}
+  >
+    <div className="bg-blue-600 p-4 rounded-full">
+      <FaPhoneAlt className="text-2xl text-white" />
+    </div>
+  </motion.button>
 
-          {/* WhatsApp Button */}
-          <motion.button
-            onClick={handleWhatsApp}
-            className="flex flex-col items-center justify-center bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="bg-green-600 p-4 rounded-full mb-4">
-              <FaWhatsapp className="text-2xl text-white" />
-            </div>
-            <h4 className="text-xl font-semibold text-blue-700 mb-2 font-poppins">WhatsApp</h4>
-            <p className="text-gray-600 font-inter">{contactDetails.whatsappNumber}</p>
-          </motion.button>
+  {/* WhatsApp Button */}
+  <motion.button
+    onClick={handleWhatsApp}
+    className="flex items-center justify-center p-4 rounded-full hover:bg-green-100 transition-all duration-300"
+    whileHover={{ scale: 1.1 }}
+  >
+    <div className="bg-green-600 p-4 rounded-full">
+      <FaWhatsapp className="text-2xl text-white" />
+    </div>
+  </motion.button>
 
-          {/* Email Button */}
-          <motion.button
-            onClick={handleEmail}
-            className="flex flex-col items-center justify-center bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
-            whileHover={{ scale: 1.05 }}
-          >
-            <div className="bg-red-600 p-4 rounded-full mb-4">
-              <FaEnvelope className="text-2xl text-white" />
-            </div>
-            <h4 className="text-xl font-semibold text-blue-700 mb-2 font-poppins">Email Us</h4>
-            <p className="text-gray-600 font-inter">{contactDetails.email}</p>
-          </motion.button>
-        </div>
+  {/* Email Button */}
+  <motion.button
+    onClick={handleEmail}
+    className="flex items-center justify-center p-4 rounded-full hover:bg-red-100 transition-all duration-300"
+    whileHover={{ scale: 1.1 }}
+  >
+    <div className="bg-red-600 p-4 rounded-full">
+      <FaEnvelope className="text-2xl text-white" />
+    </div>
+  </motion.button>
+</div>
       </motion.div>
 
-      {/* Call to Action */}
+      {/* Call to Action Section */}
       <motion.div
         className="mt-12"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 1.2 }}
+        initial={{ opacity: 0, y: 20 }} // Initial animation state
+        animate={{ opacity: 1, y: 0 }} // Animation on load
+        transition={{ duration: 1, delay: 1.2 }} // Animation duration and delay
       >
         <p className="text-gray-600 text-lg mb-6 font-inter">
           Need more information? Reach out to us today!

@@ -116,6 +116,9 @@ const Technician = () => {
     name: "",
     email: "",
     phone: "",
+    address: "",
+    pincode: "",
+    otherNumber: "",
     message: "",
     customService: "", // For custom service description
   });
@@ -129,8 +132,11 @@ const Technician = () => {
   // State for booking confirmation
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // State to control visibility of the booking form
+  // State to control visibility of the booking form modal
   const [showBookingForm, setShowBookingForm] = useState(false);
+
+  // State for loading
+  const [isLoading, setIsLoading] = useState(false);
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -185,7 +191,7 @@ const Technician = () => {
       alert("Please add at least one service to the cart.");
       return;
     }
-    setShowBookingForm(true); // Show the booking form
+    setShowBookingForm(true); // Show the booking form modal
   };
 
   // Handle form submission
@@ -197,6 +203,8 @@ const Technician = () => {
     if (!formData.name) newErrors.name = "Name is required.";
     if (!formData.email) newErrors.email = "Email is required.";
     if (!formData.phone) newErrors.phone = "Phone number is required.";
+    if (!formData.address) newErrors.address = "Address is required.";
+    if (!formData.pincode) newErrors.pincode = "Pincode is required.";
     if (cart.some((item) => item.name === "Other") && !formData.customService) {
       newErrors.customService = "Please describe your custom service (minimum 3 words).";
     } else if (
@@ -212,22 +220,81 @@ const Technician = () => {
       return;
     }
 
-    // If no errors, proceed with booking
-    setIsSubmitted(true); // Show confirmation message
-    console.log("Booking Details:", {
-      ...formData,
-      cart,
-      totalPrice: calculateTotalPrice(),
+    // Simulate form submission (replace with actual API call)
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      setIsSubmitted(true); // Show confirmation message
+      console.log("Booking Details:", {
+        ...formData,
+        cart,
+        totalPrice: calculateTotalPrice(),
+      });
+
+      // Reset form and cart
+      resetForm();
+    }, 2000);
+  };
+
+  // Reset form and cart
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
+      pincode: "",
+      otherNumber: "",
+      message: "",
+      customService: "",
     });
+    setCart([]);
+    setShowBookingForm(false); // Close the modal
+  };
+
+  // Modal component
+  const Modal = ({ isOpen, onClose, children }) => {
+    if (!isOpen) return null;
+
+    return (
+      <div
+        className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50"
+        onClick={onClose} // Close modal when clicking outside
+      >
+        <div
+          className="bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl mx-4 overflow-y-auto max-h-[90vh]"
+          onClick={(e) => e.stopPropagation()} // Prevent clicks inside the modal from closing it
+        >
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          >
+            &times;
+          </button>
+          {children}
+        </div>
+      </div>
+    );
   };
 
   return (
     <div className="max-w-6xl mx-auto p-6">
       {/* Heading */}
-      <h1 className="text-4xl font-bold text-blue-600 mb-6 text-center">Technician Services</h1>
-      <p className="text-gray-600 mb-8 text-center text-lg">
-        We offer expert technical support for various appliances and systems at minimal rates.
+      <h2 className="text-4xl font-bold text-blue-700 mb-6 text-center font-poppins">
+        Electrician Services
+      </h2>
+      <p className="text-gray-600 mb-8 text-center text-lg font-inter">
+        We offer professional electrical services at affordable prices. Our certified electricians ensure safe and reliable solutions for all your electrical needs.
       </p>
+
+      {/* Image Banner */}
+      <div className="mb-8">
+        <img
+          src="https://images.pexels.com/photos/3825586/pexels-photo-3825586.jpeg" // Electrician banner image
+          alt="Electrician Services"
+          className="w-full h-64 object-cover rounded-lg shadow-lg"
+        />
+      </div>
 
       {/* Services in Card Format */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
@@ -246,9 +313,13 @@ const Technician = () => {
                 className="w-full h-48 object-cover"
               />
               <div className="p-6">
-                <h3 className="text-xl font-bold text-blue-700 mb-2">{service.name}</h3>
-                <p className="text-gray-600 mb-4">{service.description}</p>
-                <p className="text-lg font-semibold text-blue-700">₹{service.price}</p>
+                <h3 className="text-xl font-bold text-blue-700 mb-2 font-poppins">
+                  {service.name}
+                </h3>
+                <p className="text-gray-600 mb-4 font-inter">{service.description}</p>
+                <p className="text-lg font-semibold text-blue-700 font-poppins">
+                  ₹{service.price} (Minimum)
+                </p>
                 <div className="flex items-center gap-2 mt-4">
                   <input
                     type="number"
@@ -269,7 +340,7 @@ const Technician = () => {
                       onClick={() => addToCart(service, quantity)}
                       className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-300 font-inter"
                     >
-                      Add to Cart
+                      Add
                     </button>
                   )}
                 </div>
@@ -288,65 +359,136 @@ const Technician = () => {
         onBookNow={handleBookNow}
       />
 
-      {/* Booking and Enquiry Form */}
-      {showBookingForm && !isSubmitted && (
-        <div className="mb-12">
-          <h3 className="text-2xl font-bold text-blue-700 mb-4">Enter details</h3>
-          <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
-            <div className="mb-4">
-              <label className="block text-gray-700 font-medium mb-2">Your Name</label>
+      {/* Booking Form Modal */}
+      <Modal isOpen={showBookingForm} onClose={() => setShowBookingForm(false)}>
+        <div className="bg-white p-8 rounded-xl shadow-lg max-w-2xl w-full mx-4 overflow-y-auto max-h-[90vh]">
+          <h3 className="text-3xl font-bold text-blue-700 mb-6 font-poppins text-center">
+            Enter Details for Further Booking
+          </h3>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Form Fields */}
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2 font-poppins">
+                Your Name
+              </label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
                 placeholder="Enter your name"
-                className={`w-full px-4 py-2 border ${
-                  errors.name ? "border-red-500" : "border-gray-300"
-                } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 font-inter`}
+                className={`w-full px-4 py-3 border-2 ${
+                  errors.name ? "border-red-500" : "border-gray-200"
+                } rounded-lg focus:outline-none focus:border-blue-600 transition-all duration-300 font-inter`}
                 required
               />
               {errors.name && (
-                <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+                <p className="text-red-500 text-sm mt-1 font-inter">{errors.name}</p>
               )}
             </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 font-medium mb-2">Your Email</label>
+
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2 font-poppins">
+                Your Email
+              </label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
                 placeholder="Enter your email"
-                className={`w-full px-4 py-2 border ${
-                  errors.email ? "border-red-500" : "border-gray-300"
-                } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 font-inter`}
+                className={`w-full px-4 py-3 border-2 ${
+                  errors.email ? "border-red-500" : "border-gray-200"
+                } rounded-lg focus:outline-none focus:border-blue-600 transition-all duration-300 font-inter`}
                 required
               />
               {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                <p className="text-red-500 text-sm mt-1 font-inter">{errors.email}</p>
               )}
             </div>
-            <div className="mb-4">
-              <label className="block text-gray-700 font-medium mb-2">Your Phone Number</label>
+
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2 font-poppins">
+                Your Phone Number
+              </label>
               <input
                 type="tel"
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
                 placeholder="Enter your phone number"
-                className={`w-full px-4 py-2 border ${
-                  errors.phone ? "border-red-500" : "border-gray-300"
-                } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 font-inter`}
+                className={`w-full px-4 py-3 border-2 ${
+                  errors.phone ? "border-red-500" : "border-gray-200"
+                } rounded-lg focus:outline-none focus:border-blue-600 transition-all duration-300 font-inter`}
                 required
               />
               {errors.phone && (
-                <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+                <p className="text-red-500 text-sm mt-1 font-inter">{errors.phone}</p>
               )}
             </div>
+
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2 font-poppins">
+                Your Address
+              </label>
+              <textarea
+                name="address"
+                value={formData.address}
+                onChange={handleInputChange}
+                placeholder="Enter your address"
+                rows="3"
+                className={`w-full px-4 py-3 border-2 ${
+                  errors.address ? "border-red-500" : "border-gray-200"
+                } rounded-lg focus:outline-none focus:border-blue-600 transition-all duration-300 font-inter`}
+                required
+              />
+              {errors.address && (
+                <p className="text-red-500 text-sm mt-1 font-inter">{errors.address}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2 font-poppins">
+                Pincode
+              </label>
+              <input
+                type="text"
+                name="pincode"
+                value={formData.pincode}
+                onChange={handleInputChange}
+                placeholder="Enter your pincode"
+                className={`w-full px-4 py-3 border-2 ${
+                  errors.pincode ? "border-red-500" : "border-gray-200"
+                } rounded-lg focus:outline-none focus:border-blue-600 transition-all duration-300 font-inter`}
+                required
+              />
+              {errors.pincode && (
+                <p className="text-red-500 text-sm mt-1 font-inter">{errors.pincode}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2 font-poppins">
+                Other Number (Optional)
+              </label>
+              <input
+                type="tel"
+                name="otherNumber"
+                value={formData.otherNumber}
+                onChange={handleInputChange}
+                placeholder="Enter another phone number"
+                className={`w-full px-4 py-3 border-2 ${
+                  errors.otherNumber ? "border-red-500" : "border-gray-200"
+                } rounded-lg focus:outline-none focus:border-blue-600 transition-all duration-300 font-inter`}
+              />
+              {errors.otherNumber && (
+                <p className="text-red-500 text-sm mt-1 font-inter">{errors.otherNumber}</p>
+              )}
+            </div>
+
             {cart.some((item) => item.name === "Other") && (
-              <div className="mb-4">
-                <label className="block text-gray-700 font-medium mb-2">
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2 font-poppins">
                   Describe Your Custom Service
                 </label>
                 <textarea
@@ -355,40 +497,47 @@ const Technician = () => {
                   onChange={handleInputChange}
                   placeholder="Please describe your requirements (minimum 3 words)..."
                   rows="4"
-                  className={`w-full px-4 py-2 border ${
-                    errors.customService ? "border-red-500" : "border-gray-300"
-                  } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 font-inter`}
+                  className={`w-full px-4 py-3 border-2 ${
+                    errors.customService ? "border-red-500" : "border-gray-200"
+                  } rounded-lg focus:outline-none focus:border-blue-600 transition-all duration-300 font-inter`}
                 ></textarea>
                 {errors.customService && (
-                  <p className="text-red-500 text-sm mt-1">{errors.customService}</p>
+                  <p className="text-red-500 text-sm mt-1 font-inter">
+                    {errors.customService}
+                  </p>
                 )}
               </div>
             )}
-            <div className="mb-4">
-              <label className="block text-gray-700 font-medium mb-2">Additional Message</label>
+
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2 font-poppins">
+                Additional Message
+              </label>
               <textarea
                 name="message"
                 value={formData.message}
                 onChange={handleInputChange}
                 placeholder="Any additional details or instructions..."
                 rows="4"
-                className={`w-full px-4 py-2 border ${
-                  errors.message ? "border-red-500" : "border-gray-300"
-                } rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 font-inter`}
+                className={`w-full px-4 py-3 border-2 ${
+                  errors.message ? "border-red-500" : "border-gray-200"
+                } rounded-lg focus:outline-none focus:border-blue-600 transition-all duration-300 font-inter`}
               ></textarea>
               {errors.message && (
-                <p className="text-red-500 text-sm mt-1">{errors.message}</p>
+                <p className="text-red-500 text-sm mt-1 font-inter">{errors.message}</p>
               )}
             </div>
+
             <button
               type="submit"
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-all duration-300 font-poppins"
+              className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 active:bg-blue-800 transition-all duration-300 font-poppins font-semibold shadow-md"
+              disabled={isLoading}
             >
-              Proceed for booking
+              {isLoading ? "Submitting..." : "Book"}
             </button>
           </form>
         </div>
-      )}
+      </Modal>
 
       {/* Booking Confirmation */}
       {isSubmitted && (
@@ -400,9 +549,11 @@ const Technician = () => {
 
       {/* Call to Action */}
       <div className="text-center bg-blue-100 p-8 rounded-lg shadow-md">
-        <h3 className="text-2xl font-bold text-blue-700 mb-4">Ready to Get Started?</h3>
-        <p className="text-gray-600 mb-6">
-          Contact us today for reliable and professional technical services.
+        <h3 className="text-2xl font-bold text-blue-700 mb-4 font-poppins">
+          Ready to Get Started?
+        </h3>
+        <p className="text-gray-600 mb-6 font-inter">
+          Contact us today for reliable and professional electrical services.
         </p>
         <button className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-all duration-300 font-poppins">
           Call Us Now
