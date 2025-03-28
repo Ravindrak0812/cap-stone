@@ -1,8 +1,11 @@
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
   "dependencies": {
     "multer": "^1.4.5-lts.1"
 =======
+=======
+>>>>>>> c3643b496ad5c1d1f1d27545f0b5146db0422352
   "name": "client",
   "private": true,
   "version": "0.0.0",
@@ -40,6 +43,9 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0"
+<<<<<<< HEAD
 >>>>>>> c3643b4 (inhace ui)
+=======
+>>>>>>> c3643b496ad5c1d1f1d27545f0b5146db0422352
   }
 }
