@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Footer from "../../Components/Footer";
 
 const Electrician = () => {
   // Service data with image URLs
@@ -381,6 +382,9 @@ const Electrician = () => {
           Call Us Now
         </button>
       </div>
+      <section>
+        <Footer/>
+      </section>
     </div>
   );
 };

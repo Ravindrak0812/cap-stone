@@ -1,4 +1,5 @@
 import React from "react";
+import Footer from "../../Components/Footer";
 
 const Carpenter = () => {
   // Carpenter services data with image URLs
@@ -114,6 +115,9 @@ const Carpenter = () => {
           </div>
         ))}
       </div>
+      <section>
+        <Footer/>
+      </section>
     </div>
   );
 };

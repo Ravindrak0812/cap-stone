@@ -15,6 +15,7 @@ import Carpenter from "./Pages/Services/Carpenter"; // Fixed path
 import ServicePage from "./Pages/Services/ServicePage"; // Fixed path
 
 export default function App() {
+  
   return (
     <Router>
       <Navbar />
@@ -32,5 +33,6 @@ export default function App() {
         <Route path="/services/carpenter" element={<Carpenter />} />
       </Routes>
     </Router>
+    
   );
 }

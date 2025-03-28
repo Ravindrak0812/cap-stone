@@ -9,6 +9,7 @@ const ServicePage = () => {
         {serviceName.replace("-", " ")} Services
       </h1>
       <p>Welcome to the {serviceName.replace("-", " ")} service page.</p>
+
     </div>
   );
 };

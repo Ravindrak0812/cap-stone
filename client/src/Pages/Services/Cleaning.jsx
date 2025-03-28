@@ -11,6 +11,7 @@
   
 
 import React from "react";
+import Footer from "../../Components/Footer";
 
 const Cleaning = () => {
   // Cleaning services data with image URLs
@@ -147,6 +148,9 @@ const Cleaning = () => {
           </div>
         ))}
       </div>
+      <section>
+        <Footer/>
+      </section>
     </div>
   );
 };

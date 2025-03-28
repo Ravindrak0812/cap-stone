@@ -1,4 +1,5 @@
 import React from "react";
+import Footer from "../../Components/Footer";
 
 const Plumber = () => {
   // Plumbing services data with proper image URLs
@@ -135,6 +136,9 @@ const Plumber = () => {
           </div>
         ))}
       </div>
+      <section>
+        <Footer/>
+      </section>
     </div>
   );
 };
