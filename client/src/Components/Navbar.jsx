@@ -1,23 +1,39 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { FiChevronDown, FiSearch, FiMessageCircle, FiPhone, FiMail, FiUser, FiMenu } from "react-icons/fi";
+import {
+  FiChevronDown,
+  FiSearch,
+  FiMessageCircle,
+  FiPhone,
+  FiMail,
+  FiUser,
+  FiMenu,
+  FiLogIn,
+  FiLogOut,
+  FiUserPlus,
+} from "react-icons/fi";
 import { FaWhatsapp } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { contactDetails } from "../config";
 
-export default function Navbar() {
+const Navbar = () => {
+  // State variables
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredServices, setFilteredServices] = useState([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Simulate login state
+
+  // Refs for handling clicks outside
   const dropdownRef = useRef(null);
   const enquiryRef = useRef(null);
   const searchRef = useRef(null);
   const userRef = useRef(null);
   const mobileMenuRef = useRef(null);
 
+  // Services data
   const services = [
     { name: "Technician", path: "/services/technician" },
     { name: "Electrician", path: "/services/electrician" },
@@ -27,11 +43,19 @@ export default function Navbar() {
     { name: "Cleaning Services", path: "/services/cleaning" },
   ];
 
+  // Toggle functions
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
   const toggleEnquiry = () => setIsEnquiryOpen(!isEnquiryOpen);
   const toggleUserDropdown = () => setIsUserDropdownOpen(!isUserDropdownOpen);
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
 
+  // Logout handler
+  const handleLogout = () => {
+    setIsLoggedIn(false); // Simulate logout
+    setIsUserDropdownOpen(false); // Close dropdown after logout
+  };
+
+  // Search functionality
   const handleSearchChange = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
@@ -51,8 +75,9 @@ export default function Navbar() {
     console.log("Navigating to:", servicePath);
   };
 
+  // Handle clicks outside dropdowns
   useEffect(() => {
-    function handleClickOutside(event) {
+    const handleClickOutside = (event) => {
       if (
         (dropdownRef.current && !dropdownRef.current.contains(event.target)) &&
         (searchRef.current && !searchRef.current.contains(event.target)) &&
@@ -66,7 +91,8 @@ export default function Navbar() {
         setIsUserDropdownOpen(false);
         setIsMobileMenuOpen(false);
       }
-    }
+    };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -91,8 +117,8 @@ export default function Navbar() {
           <div
             className="relative"
             ref={dropdownRef}
-            onMouseEnter={() => setIsDropdownOpen(true)} // Show on hover
-            onMouseLeave={() => setIsDropdownOpen(false)} // Hide on hover out
+            onMouseEnter={() => setIsDropdownOpen(true)}
+            onMouseLeave={() => setIsDropdownOpen(false)}
           >
             <button
               onClick={toggleDropdown}
@@ -208,18 +234,34 @@ export default function Navbar() {
           {/* User Dropdown */}
           {isUserDropdownOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg border border-gray-100 rounded-lg py-2">
-              <Link
-                to="/login"
-                className="block px-4 py-2 text-gray-700 hover:bg-gray-50 transition-all duration-300"
-              >
-                Login
-              </Link>
-              <Link
-                to="/signup"
-                className="block px-4 py-2 text-gray-700 hover:bg-gray-50 transition-all duration-300"
-              >
-                Sign Up
-              </Link>
+              {isLoggedIn ? (
+                // Logout Button (shown when user is logged in)
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 transition-all duration-300"
+                >
+                  <FiLogOut className="mr-2" />
+                  <span>Logout</span>
+                </button>
+              ) : (
+                // Login and Signup Buttons (shown when user is not logged in)
+                <>
+                  <Link
+                    to="/login"
+                    className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 transition-all duration-300"
+                  >
+                    <FiLogIn className="mr-2" />
+                    <span>Login</span>
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 transition-all duration-300"
+                  >
+                    <FiUserPlus className="mr-2" />
+                    <span>Sign Up</span>
+                  </Link>
+                </>
+              )}
             </div>
           )}
         </div>
@@ -366,18 +408,34 @@ export default function Navbar() {
                 {/* User Dropdown */}
                 {isUserDropdownOpen && (
                   <div className="mt-2 bg-white shadow-lg border border-gray-100 rounded-lg py-2">
-                    <Link
-                      to="/login"
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-50 transition-all duration-300"
-                    >
-                      Login
-                    </Link>
-                    <Link
-                      to="/signup"
-                      className="block px-4 py-2 text-gray-700 hover:bg-gray-50 transition-all duration-300"
-                    >
-                      Sign Up
-                    </Link>
+                    {isLoggedIn ? (
+                      // Logout Button (shown when user is logged in)
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 transition-all duration-300"
+                      >
+                        <FiLogOut className="mr-2" />
+                        <span>Logout</span>
+                      </button>
+                    ) : (
+                      // Login and Signup Buttons (shown when user is not logged in)
+                      <>
+                        <Link
+                          to="/login"
+                          className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 transition-all duration-300"
+                        >
+                          <FiLogIn className="mr-2" />
+                          <span>Login</span>
+                        </Link>
+                        <Link
+                          to="/signup"
+                          className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 transition-all duration-300"
+                        >
+                          <FiUserPlus className="mr-2" />
+                          <span>Sign Up</span>
+                        </Link>
+                      </>
+                    )}
                   </div>
                 )}
               </div>
@@ -387,4 +445,6 @@ export default function Navbar() {
       </AnimatePresence>
     </nav>
   );
-}
+};
+
+export default Navbar;

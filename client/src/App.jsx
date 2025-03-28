@@ -5,6 +5,7 @@ import Home from "./Pages/Users/Home"
 import About from "./Pages/Users/About"
 import Contact from "./Pages/Users/Contact";
 import SignUp from "./Pages/Users/SignUp";
+// import Chatbot from "./Components/Chatbot";
 import Login from "./Pages/Users/Login";
 
 import Electrician from "./Pages/Services/Electrician"; // Fixed path
@@ -19,6 +20,7 @@ export default function App() {
   return (
     <Router>
       <Navbar />
+    
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
